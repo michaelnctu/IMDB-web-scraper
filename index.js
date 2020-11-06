@@ -1,19 +1,28 @@
-const fetch = require('node-fetch');
-const cheerio = require('cheerio')
+const express = require('express')
 
-const url = 'https://www.imdb.com/find?q=';
+const scraper = require('./scraper')
+
+const app = express()
 
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'fuck civil engineering'
+  })
+})
 
-function searchMovies(searchTerm) {
-  return fetch(`${url}${searchTerm}`)
-    .then(response =>
-      response.text()) //html body
-    .then(body => { console.log(body) })
+app.get('/search/:title', (req, res) => {
+  scraper
+    .searchMovies(req.params.title)
+    .then(movies => {
+      res.json(movies)
+    })
+})
 
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Listen on ${port}`)
 }
 
-searchMovies('star-wars')
-  .then(body => {
-    console.log(body)
-  })
+)
