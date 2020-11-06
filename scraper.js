@@ -52,14 +52,22 @@ function getMovie(imdbID) {
       const $ = cheerio.load(body);
       const $title = $('.title_wrapper h1');
 
-      const imdbID = $title.attr('href').match(/title\/(.*)\//)[1]
       const title = $title.first().contents().filter(function () {  //first()第一個元素
         return this.type === 'text';
       }).text().trim();
       const rating = $('span[itemprop="ratingValue"]').text();
       const runTime = $('time').first().contents().text().trim()
 
-      $('meta[itemProp="contentRating"]').attr('content');
+
+      const genres = []  //genre為多個 a 標籤
+      $('.subtext a').each(function (i, ele) {
+        const genre = $(ele).text()
+        genres.push(genre)
+      })
+      genres.splice(-1, 1) //remove last element
+
+      const poster = $('div .poster a img').attr('src')
+
 
 
       const movie = {
@@ -67,7 +75,8 @@ function getMovie(imdbID) {
         title,
         rating,
         runTime,
-        // genres,
+        genres,
+        poster
         // datePublished,
         // imdbRating,
         // poster,
