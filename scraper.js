@@ -55,19 +55,47 @@ function getMovie(imdbID) {
       const title = $title.first().contents().filter(function () {  //first()第一個元素
         return this.type === 'text';
       }).text().trim();
+
       const rating = $('span[itemprop="ratingValue"]').text();
       const runTime = $('time').first().contents().text().trim()
 
 
-      const genres = []  //genre為多個 a 標籤
+      const genres = []  //genre為多個 a 標籤u
       $('.subtext a').each(function (i, ele) {
-        const genre = $(ele).text()
+        const genre = $(ele).text().trim()
         genres.push(genre)
       })
-      genres.splice(-1, 1) //remove last element
+      const datePublished = genres[3]
 
+      genres.splice(-1, 1) //remove last element
       const poster = $('div .poster a img').attr('src')
 
+      const summary = $('div.summary_text').text().trim();
+
+
+      const directors = []
+      $('.credit_summary_item').first().find('a').each(function (i, ele) {
+        const director = $(ele).text().trim()
+        directors.push(director)
+      })  //might have 2 directors
+
+      const writers = []
+      $('.credit_summary_item').eq(1).find('a').each(function (i, ele) {
+        const writer = $(ele).text().trim()
+        writers.push(writer)
+      })
+      writers.splice(-1, 1)
+
+      const stars = [];
+      $('.credit_summary_item').eq(2).find('a').each(function (i, ele) {
+        const star = $(ele).text().trim()
+        stars.push(star)
+      })
+      stars.splice(-1, 1)
+
+      const storyLine = $('.canwrap').first().text().trim()
+
+      const trailer = $('.slate').find('a').attr('href');
 
 
       const movie = {
@@ -76,17 +104,14 @@ function getMovie(imdbID) {
         rating,
         runTime,
         genres,
-        poster
-        // datePublished,
-        // imdbRating,
-        // poster,
-        // summary,
-        // directors,
-        // writers,
-        // stars,
-        // storyLine,
-        // companies,
-        // trailer: `https://www.imdb.com${trailer}`
+        poster,
+        datePublished,
+        summary,
+        directors,
+        writers,
+        stars,
+        storyLine,
+        trailer: `https://www.imdb.com${trailer}`
       };
 
       // movieCache[imdbID] = movie;
