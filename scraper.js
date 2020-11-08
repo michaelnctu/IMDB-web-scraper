@@ -13,12 +13,20 @@ const searchUrl = 'https://www.imdb.com/find?q=';
 const movieUrl = 'https://www.imdb.com/title/'
 
 
+const searchCache = {}
+const movieCache = {}
 
 
 
 const searchCache = {};
 
 function searchMovies(searchTerm) {
+
+  if (searchCache[searchTerm]) {
+    return Promise.resolve(searchCache[searchTerm])
+  }
+
+
   return fetch(`${searchUrl}${searchTerm}`)
     .then(response => response.text())
     .then(body => {
@@ -44,6 +52,11 @@ function searchMovies(searchTerm) {
 }
 
 function getMovie(imdbID) {
+
+  if (movieCache[imdbID]) {
+    console.log('Serving from cache:', imdbID);
+    return Promise.resolve(movieCache[imdbID])
+  }
 
 
   return fetch(`${movieUrl}${imdbID}`)
@@ -114,9 +127,8 @@ function getMovie(imdbID) {
         trailer: `https://www.imdb.com${trailer}`
       };
 
-      // movieCache[imdbID] = movie;
-
       console.log(movie)
+      movieCache[imdbID] = movie
 
       return movie;
     });
