@@ -1,51 +1,44 @@
-//=>  <ul id="fruits">
-//      <li class="apple">Apple</li>
-//      <li class="orange">Orange</li>
-//      <li class="pear">Pear</li>
-//    </ul>
-
 
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
 const { response } = require('express');
 
-const searchUrl = 'https://www.imdb.com/find?q=';
+const searchUrl = 'https://www.imdb.com/find?s=tt&ttype=ft&ref_=fn_ft&q=';
 const movieUrl = 'https://www.imdb.com/title/'
+
+
 
 
 const searchCache = {}
 const movieCache = {}
 
-
-
-const searchCache = {};
-
 function searchMovies(searchTerm) {
-
   if (searchCache[searchTerm]) {
-    return Promise.resolve(searchCache[searchTerm])
+    console.log('Serving from cache:', searchTerm);
+    return Promise.resolve(searchCache[searchTerm]);
   }
-
 
   return fetch(`${searchUrl}${searchTerm}`)
     .then(response => response.text())
     .then(body => {
       const movies = [];
       const $ = cheerio.load(body);
-      $('.findResult').each(function (i, element) { //findResult為imdb標籤 each為cheerio語法 會遍歷每一個find result
+      $('.findResult').each(function (i, element) {
         const $element = $(element);
         const $image = $element.find('td a img');
         const $title = $element.find('td.result_text a');
 
-        const imdbID = $title.attr('href').match(/title\/(.*)\//)[1]; //regular expression
+        const imdbID = ($title.attr('href').match(/title\/(.*)\//) || [])[1];
 
         const movie = {
-          image: $image.attr('src'), //.attr( name, value )  這邊解除src
+          image: $image.attr('src'),
           title: $title.text(),
           imdbID
         };
         movies.push(movie);
       });
+
+      searchCache[searchTerm] = movies;
 
       return movies;
     });
