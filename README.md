@@ -22,6 +22,7 @@ or
 node index.js
 ```
 
+# Method
 | METHOD | URL |
 | :------------- | :------------- |
 | GET | /search/:searchTerm  |
