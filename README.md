@@ -22,6 +22,14 @@ or
 node index.js
 ```
 
+| METHOD | URL |
+| :------------- | :------------- |
+| GET | /search/:searchTerm  |
+| GET | /movie/:imdbID  |
+| POST | /movie/:imdbID  |
+
+
+
 # Dependencies
 + Node.js: v12.15.0
 + cheerio: "^1.0.0-rc.3",
