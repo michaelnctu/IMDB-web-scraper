@@ -10,7 +10,9 @@ const movieUrl = 'https://www.imdb.com/title/'
 const searchCache = {}
 const movieCache = {}
 
+//將跑出搜尋結果
 function searchMovies(searchTerm) {
+  //如果cache有資料則不用fetch
   if (searchCache[searchTerm]) {
     console.log('Serving from cache:', searchTerm);
     return Promise.resolve(searchCache[searchTerm]);
@@ -25,7 +27,6 @@ function searchMovies(searchTerm) {
         const $element = $(element);
         const $image = $element.find('td a img');
         const $title = $element.find('td.result_text a');
-
         const imdbID = ($title.attr('href').match(/title\/(.*)\//) || [])[1];
 
         const movie = {
@@ -42,6 +43,7 @@ function searchMovies(searchTerm) {
     });
 }
 
+//將得到單個movie資訊
 function getMovie(imdbID) {
 
   if (movieCache[imdbID]) {
@@ -124,8 +126,6 @@ function getMovie(imdbID) {
       return movie;
     });
 }
-
-
 
 
 module.exports = {

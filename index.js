@@ -1,8 +1,10 @@
 const express = require('express')
 const scraper = require('./scraper')
 const mongoose = require('mongoose')
+const app = express()
 const cors = require('cors')
 
+//database connection
 mongoose.connect('mongodb://localhost/IMDB-Movie', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 db.on('error', () => {
@@ -14,10 +16,6 @@ db.once('open', () => {
 
 //mongoDB
 const Movie = require('./models/movie')
-
-
-const app = express()
-
 
 app.use(cors())
 app.options('*', cors())
@@ -47,15 +45,17 @@ app.get('/movie/:imdbID', (req, res) => {
 app.post('/movie/:imdbID', (req, res) => {
   scraper.getMovie(req.params.imdbID)
     .then(movie => {
-      console.log('post!')
-      console.log(movie)
+      console.log('done!')
       return Movie.create({
         imdbID: movie.imdbID,
-        title: movie.title
+        title: movie.title,
+        rating: movie.rating,
+        genres: movie.genres,
+        datePublished: movie.datePublished
       })
     })
     .then(user => {
-      return res.json({ status: 'success', message: 'Registration success.' })
+      return res.status(200).send('database updated!')
     })
     .catch(error => res.send(String(error)))
 
