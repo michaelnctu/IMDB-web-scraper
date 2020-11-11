@@ -7,8 +7,6 @@ const searchUrl = 'https://www.imdb.com/find?s=tt&ttype=ft&ref_=fn_ft&q=';
 const movieUrl = 'https://www.imdb.com/title/'
 
 
-
-
 const searchCache = {}
 const movieCache = {}
 

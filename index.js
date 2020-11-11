@@ -1,8 +1,7 @@
 const express = require('express')
-const cors = require('cors')
 const scraper = require('./scraper')
-
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 mongoose.connect('mongodb://localhost/IMDB-Movie', { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
@@ -18,8 +17,6 @@ const Movie = require('./models/movie')
 
 
 const app = express()
-
-
 
 
 app.use(cors())
@@ -48,7 +45,6 @@ app.get('/movie/:imdbID', (req, res) => {
 })
 
 app.post('/movie/:imdbID', (req, res) => {
-
   scraper.getMovie(req.params.imdbID)
     .then(movie => {
       console.log('post!')
