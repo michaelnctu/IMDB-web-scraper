@@ -3,14 +3,15 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const movieSchema = new Schema({
-  name: {
+  imdbID: {
     type: String,
-    required: true
+    required: false
   },
-  isDone: {
-    type: Boolean,
-    default: false
+  title: {
+    type: String,
+    required: false
   }
 })
 
-module.exports = mongoose.model('Movie', movieSchema)
+module.exports = mongoose.model('movie', movieSchema)
+

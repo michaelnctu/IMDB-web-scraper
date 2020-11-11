@@ -2,8 +2,26 @@ const express = require('express')
 const cors = require('cors')
 const scraper = require('./scraper')
 
+const mongoose = require('mongoose')
+
+mongoose.connect('mongodb://localhost/IMDB-Movie', { useNewUrlParser: true, useUnifiedTopology: true })
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
+//mongoDB
+const Movie = require('./models/movie')
+
 
 const app = express()
+
+
+
+
 app.use(cors())
 app.options('*', cors())
 
@@ -31,6 +49,21 @@ app.get('/movie/:imdbID', (req, res) => {
 
 app.post('/movie/:imdbID', (req, res) => {
 
+  scraper.getMovie(req.params.imdbID)
+    .then(movie => {
+      console.log('post!')
+      console.log(movie)
+      return Movie.create({
+        imdbID: movie.imdbID,
+        title: movie.title
+      })
+    })
+    .then(user => {
+      return res.json({ status: 'success', message: 'Registration success.' })
+    })
+    .catch(error => res.send(String(error)))
+
+
 })
 
 
@@ -40,3 +73,7 @@ app.listen(port, () => {
 }
 
 )
+
+
+
+
