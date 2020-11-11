@@ -11,7 +11,7 @@ Stored the movie data with MongoDB database and made it easily accessible throug
 ```
 git clone https://github.com/michaelnctu/IMDB-web-scraper.git
 ```
-2. After direct into the file
+2. After directing into the file
 ```
 npm install
 ```
