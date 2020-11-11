@@ -17,7 +17,7 @@ app.get('/search/:title', (req, res) => {
   scraper
     .searchMovies(req.params.title)
     .then(movies => {
-      res.json(movies)
+      res.json(movies) //array
     })
 })
 
@@ -27,6 +27,10 @@ app.get('/movie/:imdbID', (req, res) => {
     .then(movie => {
       res.json(movie)
     })
+})
+
+app.post('/movie/:imdbID', (req, res) => {
+
 })
 
 
