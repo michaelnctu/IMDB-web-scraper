@@ -10,6 +10,18 @@ const movieSchema = new Schema({
   title: {
     type: String,
     required: false
+  },
+  rating: {
+    type: String,
+    required: false
+  },
+  genres: {
+    type: String,
+    required: false
+  },
+  datePublished: {
+    type: String,
+    required: false
   }
 })
 
