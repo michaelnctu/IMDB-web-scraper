@@ -1,6 +1,7 @@
 # IMDB MOVIE SCRAPER (Backend)
+
 A small API by which you can scrape all the movie data you want and has been deployed on AWS.
-```
+
 Stored the movie data with MongoDB database and made it easily accessible through ROBO 3T locally.
 
 + Frontend code - https://github.com/michaelnctu/imdb-scraper-client
