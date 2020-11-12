@@ -45,20 +45,26 @@ app.get('/movie/:imdbID', (req, res) => {
 app.post('/movie/:imdbID', (req, res) => {
   scraper.getMovie(req.params.imdbID)
     .then(movie => {
-      console.log('done!')
-      return Movie.create({
-        imdbID: movie.imdbID,
-        title: movie.title,
-        rating: movie.rating,
-        genres: movie.genres,
-        datePublished: movie.datePublished
+
+      console.log('post activated!')
+      Movie.findOne({ imdbID: movie.imdbID }).then(id => {
+        if (id) {
+          console.log('movie already exist!')
+          return res.json({ status: 'error', message: 'movie already exist!' })
+        } else {
+          return Movie.create({
+            imdbID: movie.imdbID,
+            title: movie.title,
+            rating: movie.rating,
+            genres: movie.genres,
+            datePublished: movie.datePublished
+          }).then(user => {
+            return res.status(200).send('database updated!')
+          })
+            .catch(error => res.send(String(error)))
+        }
       })
     })
-    .then(user => {
-      return res.status(200).send('database updated!')
-    })
-    .catch(error => res.send(String(error)))
-
 
 })
 
@@ -73,3 +79,26 @@ app.listen(port, () => {
 
 
 
+// User.findOne({ where: { $or: [{ email: req.body.email }, { account: req.body.account }] } })
+//   .then(user => {
+//     if (user) {
+//       if (user.email === req.body.email) {
+//         return res.json({ status: 'error', message: 'Email has been registered.' })
+//       } else if (user.account === req.body.account) {
+//         return res.json({ status: 'error', message: 'Already have the same account.' })
+//       }
+//     } else {
+//       return User.create({
+//         name: req.body.name,
+//         account: req.body.account,
+//         email: req.body.email,
+//         password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null),
+//         role: 'user'
+//       })
+//     }
+//   })
+//   .then(user => {
+//     return res.json({ status: 'success', message: 'Registration success.' })
+//   })
+//   .catch(error => res.send(String(error)))
+//   },
