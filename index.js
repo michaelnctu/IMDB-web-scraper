@@ -17,7 +17,7 @@ db.once('open', () => {
 //mongoDB
 const Movie = require('./models/movie')
 
-app.use(cors())
+app.use(cors()) //allow跨網域權限
 app.options('*', cors())
 
 app.get('/', (req, res) => {

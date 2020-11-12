@@ -16,7 +16,7 @@ function searchMovies(searchTerm) {
   if (searchCache[searchTerm]) {
     console.log('Serving from cache:', searchTerm);
     return Promise.resolve(searchCache[searchTerm]);
-  }
+  } //檢查我的movieCache內有沒有imdbID的資料,有的話直接顯示,沒有就重新fetch資料
 
   return fetch(`${searchUrl}${searchTerm}`)
     .then(response => response.text())
@@ -27,7 +27,7 @@ function searchMovies(searchTerm) {
         const $element = $(element);
         const $image = $element.find('td a img');
         const $title = $element.find('td.result_text a');
-        const imdbID = ($title.attr('href').match(/title\/(.*)\//) || [])[1];
+        const imdbID = ($title.attr('href').match(/title\/(.*)\//) || [])[1]; //regular expression 若比對成功返回id
 
         const movie = {
           image: $image.attr('src'),
@@ -49,8 +49,7 @@ function getMovie(imdbID) {
   if (movieCache[imdbID]) {
     console.log('Serving from cache:', imdbID);
     return Promise.resolve(movieCache[imdbID])
-  }
-
+  }  //檢查我的movieCache內有沒有imdbID的資料,有的話直接顯示,沒有就重新fetch資料
 
   return fetch(`${movieUrl}${imdbID}`)
     .then(response => response.text())
